@@ -43,6 +43,10 @@
     "message": "Pfizer-BioNTech Impfstoff",
     "description": "Beschreibung des Pfizer Impfstoffes."
   },
+  "maxDateLabel": {
+    "message": "Termin finden bis zum (DD. MM. YYYY)",
+    "description": "Bis zu diesem Datum wird nach einem Termin gesucht"
+  },
   "disableAutoBook": {
     "message": "Einen Tab öffnen sobald eine Reservierung verfügbar ist.",
     "description": "Beschreibung der Funktionalität wenn die automatische Reservierung deaktiviert ist."

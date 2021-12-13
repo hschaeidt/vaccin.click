@@ -8,7 +8,7 @@
   // Convertit le nom du mois dans le nombre
   function monthToNumber(month) {
     if (/jan/i.test(month)) return 1;
-    if (/fev|feb/i.test(month)) return 2;
+    if (/f[e-é]v|feb/i.test(month)) return 2;
     if (/mar|mär/i.test(month)) return 3;
     if (/avr|apr/i.test(month)) return 4;
     if (/mai/i.test(month)) return 5;
@@ -18,7 +18,7 @@
     if (/sep/i.test(month)) return 9;
     if (/oct|okt/i.test(month)) return 10;
     if (/nov/i.test(month)) return 11;
-    if (/dec|dez/i.test(month)) return 12;
+    if (/d[e-é]c|dez/i.test(month)) return 12;
     return null;
   }
 
@@ -27,20 +27,6 @@
     if (currentMonth > selectedMonth) return new Date().getFullYear() + 1;
     return new Date().getFullYear();
   }
-  const MONTHS = {
-    'janv.': 1,
-    'févr.': 2,
-    'mars': 3,
-    'avr.': 4,
-    'mai': 5,
-    'juin': 6,
-    'juil.': 7,
-    'aout': 8,
-    'sept.': 9,
-    'oct.': 10,
-    'nov.': 11,
-    'déc.': 12,
-  };
 
   async function waitTimeout(timeout) {
     await new Promise((r) => setTimeout(r, timeout));
@@ -309,17 +295,30 @@
 
   let running = false;
   async function checkAvailability() {
-    const { locations, stopped, autoBook, injectionType, injectionVaccine, dateMaxSearch } =
-      await browser.storage.sync.get({
-        locations: {},
-        stopped: false,
-        autoBook: false,
-        injectionType: "fullServiceInjection",
-        injectionVaccine: "pfizerInjection",
-        dateMaxSearch: new Date((new Date()).getFullYear()+1, (new Date()).getMonth(), (new Date()).getDate()),
-      });
+    const {
+      locations,
+      stopped,
+      autoBook,
+      injectionType,
+      injectionVaccine,
+      dateMaxSearch,
+    } = await browser.storage.sync.get({
+      locations: {},
+      stopped: false,
+      autoBook: false,
+      injectionType: "fullServiceInjection",
+      injectionVaccine: "pfizerInjection",
+      dateMaxSearch: new Date(
+        new Date().getFullYear() + 1,
+        new Date().getMonth(),
+        new Date().getDate()
+      ),
+    });
 
-    const dateMaxSearchDate = typeof(dateMaxSearch) === 'string' ? new Date(dateMaxSearch) : dateMaxSearch;
+    const dateMaxSearchDate =
+      typeof dateMaxSearch === "string"
+        ? new Date(dateMaxSearch)
+        : dateMaxSearch;
 
     if (stopped || !locations[url]) {
       running = false;
@@ -438,8 +437,7 @@
       const parts = slot.title.match(
         /([0-9]+)\.? ([\p{Letter}]+)\.? ([0-9]+:[0-9]+)/u
       );
-        // /([0-9]+) [\p{Letter}]+\.? ([0-9]+:[0-9]+)/gu
-      // )[0].split(' ');
+
       if (!parts) {
         throw new Error(
           browser.i18n.getMessage("slotDateFormatNotFound", slot.title)
@@ -453,14 +451,15 @@
       const selectedTime = parts[3];
 
       const date = new Date(
-        `${selectedMonth} ${selectedDay} ${selectedYear} ${selectedTime}`);
+        `${selectedMonth} ${selectedDay} ${selectedYear} ${selectedTime}`
+      );
 
       if (date > dateMaxSearchDate) {
         const formatedDate = dateMaxSearchDate.toLocaleDateString();
         throw new Error(
           `Pas de créneau dispo d'ici demain soir ou avant le ${formatedDate}`
         );
-  }
+      }
 
       if (!autoBook) {
         browser.runtime.sendMessage({

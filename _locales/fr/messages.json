@@ -43,6 +43,10 @@
     "message": "Vaccin Pfizer",
     "description": "Text qui décrit un vaccin Pfizer."
   },
+  "maxDateLabel": {
+    "message": "Trouver un RDV avant le (JJ. MM. YYYY)",
+    "description": "Date limite jusquà laquelle on cherche un RDV."
+  },
   "disableAutoBook": {
     "message": "Ouvrir un onglet lorsqu'une réservation est disponible",
     "description": "Text qui décrit la fonctionalité lorsque la réservation automatique est désactivé."
